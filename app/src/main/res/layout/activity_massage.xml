@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Szyfruj"
-            android:id="@+id/button" />
+            android:id="@+id/encrypt" />
 
         <Button
             android:layout_width="wrap_content"
@@ -22,7 +22,7 @@
             android:layout_weight="1"
             android:text="Deszyfruj"
             android:enabled="false"
-            android:id="@+id/button2" />
+            android:id="@+id/decrypt" />
 
     </LinearLayout>
     <LinearLayout
@@ -35,22 +35,23 @@
             android:layout_height="fill_parent"
             android:text="Cofnij"
             android:layout_weight="1"
-            android:id="@+id/button3"
+            android:id="@+id/back"
             android:layout_gravity="bottom" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:enabled="false"
             android:text="Wyślij"
-            android:id="@+id/button4" />
+            android:id="@+id/send" />
     </LinearLayout>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:inputType="textMultiLine"
         android:ems="10"
-        android:id="@+id/editText"
+        android:id="@+id/messageText"
         />
 
 
