@@ -1,7 +1,11 @@
 package com.example.adrian.cryptosms;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,7 +26,7 @@ public class MassageActivity extends ActionBarActivity {
     private Button sendButton;
     private Button encrypteButton;
     private Button decryptButton;
-
+    private String KEY="key phrase used for XOR-ing";
     public static final String DEFAULT_ENCODING="UTF-8";
     //static BASE64Encoder enc=new BASE64Encoder();
     //static BASE64Decoder dec=new BASE64Decoder();
@@ -61,11 +65,11 @@ public class MassageActivity extends ActionBarActivity {
 //
 //    }
 
-    public static String xorMessage(String message, String key){
+    public static String xorMessage(String message, String KEY){
         try {
-            if (message==null || key==null ) return null;
+            if (message==null || KEY==null ) return null;
 
-            char[] keys=key.toCharArray();
+            char[] keys=KEY.toCharArray();
             char[] mesg=message.toCharArray();
 
             int ml=mesg.length;
@@ -91,13 +95,74 @@ public class MassageActivity extends ActionBarActivity {
         sendButton = (Button) this.findViewById(R.id.send);
         encrypteButton = (Button) this.findViewById(R.id.encrypt);
         decryptButton = (Button) this.findViewById(R.id.decrypt);
-        String txt="some text to be encrypted" ;
-        String key="key phrase used for XOR-ing";
-        String frase1 = (txt+" XOR-ed to: "+(txt=xorMessage( txt, key )));
-        String encoded=base64encode( txt );
-        String frase2 = ( " is encoded to: "+encoded+" and that is decoding to: "+ (txt=base64decode( encoded )));
-        String frase3 = ( "XOR-ing back to original: "+xorMessage( txt, key ) );
-        messageText.setText(frase1+"-------"+frase2+"==========="+frase3);
+        messageText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(messageText.getText().toString()!=""){
+                    decryptButton.setEnabled(true);
+                    sendButton.setEnabled(true);
+                }
+                else{
+                    decryptButton.setEnabled(false);
+                    sendButton.setEnabled(false);
+                }
+            }
+        });
+
+        decryptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                decryptButton.setEnabled(false);
+                encrypteButton.setEnabled(true);
+                String txtEncoded = messageText.getText().toString();
+                String xor = base64decode(txtEncoded);
+                String txt = xorMessage(xor, KEY);
+                messageText.setText(txt);
+            }
+        });
+        encrypteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                decryptButton.setEnabled(true);
+                encrypteButton.setEnabled(false);
+                String txt = messageText.getText().toString();
+                String xor = (txt=xorMessage( txt, KEY ));
+                String encoded = base64encode(xor);
+                messageText.setText(encoded);
+
+            }
+        });
+
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent smsIntent = new Intent(Intent.ACTION_VIEW);
+                smsIntent.setType("vnd.android-dir/mms-sms");
+                smsIntent.putExtra("sms_body",messageText.getText().toString());
+                startActivity(smsIntent);
+
+            }
+        });
+
+
+
+//        String txt="some text to be encrypted" ;
+//
+//
+//        String frase1 = (txt+" XOR-ed to: "+(txt=xorMessage( txt, KEY )));
+//        String encoded=base64encode( txt );
+//        String frase2 = ( " is encoded to: "+encoded+" and that is decoding to: "+ (txt=base64decode( encoded )));
+//        String frase3 = ( "XOR-ing back to original: "+xorMessage( txt, KEY ) );
+//        messageText.setText(frase1+"-------"+frase2+"==========="+frase3);
     }
 
 
