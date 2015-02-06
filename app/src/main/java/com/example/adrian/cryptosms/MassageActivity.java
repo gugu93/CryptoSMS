@@ -95,28 +95,15 @@ public class MassageActivity extends ActionBarActivity {
         sendButton = (Button) this.findViewById(R.id.send);
         encrypteButton = (Button) this.findViewById(R.id.encrypt);
         decryptButton = (Button) this.findViewById(R.id.decrypt);
-        messageText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if(messageText.getText().toString()!=""){
-                    decryptButton.setEnabled(true);
-                    sendButton.setEnabled(true);
-                }
-                else{
-                    decryptButton.setEnabled(false);
-                    sendButton.setEnabled(false);
-                }
-            }
-        });
+        if(this.getIntent().getStringExtra("SMS_BODY")!=null){
+            messageText.setText(this.getIntent().getStringExtra("SMS_BODY"));
+            encrypteButton.setEnabled(false);
+            sendButton.setText("Reply");
+            sendButton.setEnabled(true);
+            decryptButton.setEnabled(true);
+        }
 
         decryptButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,11 +132,25 @@ public class MassageActivity extends ActionBarActivity {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent smsIntent = new Intent(Intent.ACTION_VIEW);
-                smsIntent.setType("vnd.android-dir/mms-sms");
-                smsIntent.putExtra("sms_body",messageText.getText().toString());
-                startActivity(smsIntent);
-
+                if(sendButton.getText()!="Reply") {
+                    if (getIntent().getStringExtra("SMS_NUMBER") == null) {
+                        Intent smsIntent = new Intent(Intent.ACTION_VIEW);
+                        smsIntent.setType("vnd.android-dir/mms-sms");
+                        smsIntent.putExtra("sms_body", messageText.getText().toString());
+                        startActivity(smsIntent);
+                    }
+                    else{
+                        Intent smsIntent = new Intent(Intent.ACTION_VIEW);
+                        smsIntent.setType("vnd.android-dir/mms-sms");
+                        smsIntent.putExtra("sms_body", messageText.getText().toString());
+                        smsIntent.putExtra("address", getIntent().getStringExtra("SMS_NUMBER"));
+                        startActivity(smsIntent);
+                    }
+                }
+                else{
+                    sendButton.setText("Send");
+                    messageText.setText("");
+                }
             }
         });
 
@@ -175,16 +176,13 @@ public class MassageActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // app icon in action bar clicked; goto parent activity.
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 }

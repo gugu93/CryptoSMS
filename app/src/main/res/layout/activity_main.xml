@@ -25,4 +25,11 @@
         android:id="@+id/list_message"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Key"
+        android:id="@+id/key"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

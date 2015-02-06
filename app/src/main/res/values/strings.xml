@@ -7,5 +7,6 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_list_massages">ListMassagesActivity</string>
     <string name="title_activity_main">CryptoSMS</string>
+    <string name="title_activity_key">KeyActivity</string>
 
 </resources>

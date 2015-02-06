@@ -2,16 +2,22 @@ package com.example.adrian.cryptosms;
 
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.internal.widget.AdapterViewCompat;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
-
+import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 public class ListMassagesActivity extends Activity implements OnClickListener {
 
     // GUI Widget
@@ -46,6 +52,8 @@ public class ListMassagesActivity extends Activity implements OnClickListener {
     @Override
     public void onClick(View v) {
 
+
+
         if (v == btnInbox) {
 
             // Create Inbox box URI
@@ -67,6 +75,8 @@ public class ListMassagesActivity extends Activity implements OnClickListener {
                     R.id.lblMsg, R.id.lblNumber });
 
             lvMsg.setAdapter(adapter);
+
+
 
         }
 
@@ -91,6 +101,21 @@ public class ListMassagesActivity extends Activity implements OnClickListener {
                     R.id.lblMsg, R.id.lblNumber });
             lvMsg.setAdapter(adapter);
 
+            lvMsg.setOnItemClickListener(new OnItemClickListener() {
+
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent i = new Intent(ListMassagesActivity.this, MassageActivity.class);
+                    Cursor cursor = ((SimpleCursorAdapter) adapter).getCursor();
+                    cursor.moveToPosition(position);
+                    String body = cursor.getString(2);
+                    String number = cursor.getString(1);
+                    //long categoryId = cursor.getLong(cursor.getColumnIndex(CategoryDataHelper.ID));
+                    //Toast.makeText(getApplicationContext(),body,Toast.LENGTH_LONG).show();
+                    i.putExtra("SMS_BODY", body);
+                    i.putExtra("SMS_NUMBER", number);
+                    startActivity(i);
+                }
+            });
         }
 
         if (v == btnDraft) {
