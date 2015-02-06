@@ -23,4 +23,30 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="62dp" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:id="@+id/save_key"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/load_key"
+        android:layout_alignStart="@+id/load_key" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Load"
+        android:id="@+id/load_key"
+        android:layout_below="@+id/save_key"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="74dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send key"
+        android:id="@+id/send_key"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

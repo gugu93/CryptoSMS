@@ -1,6 +1,7 @@
 package com.example.adrian.cryptosms;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -14,8 +15,13 @@ import android.util.Base64;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 
 
@@ -26,10 +32,58 @@ public class MassageActivity extends ActionBarActivity {
     private Button sendButton;
     private Button encrypteButton;
     private Button decryptButton;
-    private String KEY="key phrase used for XOR-ing";
+    private String KEY;
     public static final String DEFAULT_ENCODING="UTF-8";
+    private Resources resources;
     //static BASE64Encoder enc=new BASE64Encoder();
     //static BASE64Decoder dec=new BASE64Decoder();
+
+    public void setKey(){
+        try {
+            String filename = "private_key.key";
+            FileInputStream fileIn=openFileInput(filename);
+            InputStreamReader InputRead= new InputStreamReader(fileIn);
+            char[] inputBuffer= new char[100];
+            String s="";
+            int charRead;
+
+            while ((charRead=InputRead.read(inputBuffer))>0) {
+                // char to string conversion
+                String readstring=String.copyValueOf(inputBuffer,0,charRead);
+                s +=readstring;
+            }
+            InputRead.close();
+            KEY=s;
+            Toast.makeText(getBaseContext(), s, Toast.LENGTH_SHORT).show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String LoadFile(String fileName, boolean loadFromRawFolder) throws IOException
+    {
+        InputStream iS;
+
+        if (loadFromRawFolder)
+        {
+            int rID = resources.getIdentifier("fortyonepost.com.lfas:raw/"+fileName, null, null);
+            iS = resources.openRawResource(rID);
+        }
+        else
+        {
+            iS = resources.getAssets().open(fileName);
+        }
+        byte[] buffer = new byte[iS.available()];
+
+        iS.read(buffer);
+        ByteArrayOutputStream oS = new ByteArrayOutputStream();
+        oS.write(buffer);
+        oS.close();
+        iS.close();
+
+        return oS.toString();
+    }
 
     public static String base64encode(String text){
         try {
@@ -95,7 +149,7 @@ public class MassageActivity extends ActionBarActivity {
         sendButton = (Button) this.findViewById(R.id.send);
         encrypteButton = (Button) this.findViewById(R.id.encrypt);
         decryptButton = (Button) this.findViewById(R.id.decrypt);
-
+        setKey();
 
         if(this.getIntent().getStringExtra("SMS_BODY")!=null){
             messageText.setText(this.getIntent().getStringExtra("SMS_BODY"));
@@ -119,13 +173,17 @@ public class MassageActivity extends ActionBarActivity {
         encrypteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                decryptButton.setEnabled(true);
-                encrypteButton.setEnabled(false);
-                String txt = messageText.getText().toString();
-                String xor = (txt=xorMessage( txt, KEY ));
-                String encoded = base64encode(xor);
-                messageText.setText(encoded);
-
+                if(KEY!=null) {
+                    decryptButton.setEnabled(true);
+                    encrypteButton.setEnabled(false);
+                    String txt = messageText.getText().toString();
+                    String xor = (txt = xorMessage(txt, KEY));
+                    String encoded = base64encode(xor);
+                    messageText.setText(encoded);
+                }
+                else{
+                    Toast.makeText(getApplicationContext(),"Dont load key",Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -150,6 +208,8 @@ public class MassageActivity extends ActionBarActivity {
                 else{
                     sendButton.setText("Send");
                     messageText.setText("");
+                    decryptButton.setEnabled(false);
+                    encrypteButton.setEnabled(true);
                 }
             }
         });
