@@ -149,6 +149,8 @@ public class MassageActivity extends ActionBarActivity {
         sendButton = (Button) this.findViewById(R.id.send);
         encrypteButton = (Button) this.findViewById(R.id.encrypt);
         decryptButton = (Button) this.findViewById(R.id.decrypt);
+        sendButton.setEnabled(true);
+
         setKey();
 
         if(this.getIntent().getStringExtra("SMS_BODY")!=null){
