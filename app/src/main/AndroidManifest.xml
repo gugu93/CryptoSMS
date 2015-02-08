@@ -25,6 +25,10 @@
             android:label="@string/title_activity_massage" >
         </activity>
         <activity
+            android:name=".DeviceListActivity"
+            android:label="bababa" >
+        </activity>
+        <activity
             android:name=".ListMassagesActivity"
             android:label="@string/title_activity_list_massages" >
         </activity>

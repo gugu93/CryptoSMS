@@ -93,7 +93,7 @@ public class KeyActivity extends ActionBarActivity {
         but4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),DeviceListActivity.class);
+                Intent intent = new Intent(KeyActivity.this,DeviceListActivity.class);
                 startActivity(intent);
             }
         });
@@ -105,12 +105,14 @@ public class KeyActivity extends ActionBarActivity {
     protected void onStart() {
         super.onStart();
         BA = BluetoothAdapter.getDefaultAdapter();
-        if (!BA.isEnabled()) {
-            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
-            // Otherwise, setup the chat session
-        } else {
-            if (mChatService == null) setupChat();
+        if(BA != null) {
+            if (!BA.isEnabled()) {
+                Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+                // Otherwise, setup the chat session
+            } else {
+                if (mChatService == null) setupChat();
+            }
         }
     }
 
