@@ -28,25 +28,61 @@
         android:layout_height="wrap_content"
         android:text="Save"
         android:id="@+id/save_key"
-        android:layout_centerVertical="true"
-        android:layout_alignLeft="@+id/load_key"
-        android:layout_alignStart="@+id/load_key" />
+        android:layout_below="@+id/private_key"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="143dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Load"
         android:id="@+id/load_key"
-        android:layout_below="@+id/save_key"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="74dp" />
+        android:layout_above="@+id/button_send"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Send key"
-        android:id="@+id/send_key"
+        android:text="Send"
+        android:id="@+id/button_send"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="BlueTooth"
+        android:id="@+id/bluetooth_devices"
+        android:layout_below="@+id/save_key"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/save_key"
+        android:layout_alignEnd="@+id/save_key" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/edit_text_out"
+        android:layout_below="@+id/load_key"
+        android:layout_alignRight="@+id/textView"
+        android:layout_alignEnd="@+id/textView" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/in"
+        android:stackFromBottom="true"
+        android:transcriptMode="alwaysScroll"
+        android:layout_above="@+id/edit_text_out"
+        android:layout_alignRight="@+id/edit_text_out"
+        android:layout_alignEnd="@+id/edit_text_out"
+        android:layout_alignLeft="@+id/edit_text_out"
+        android:layout_alignStart="@+id/edit_text_out"
+        android:layout_alignTop="@+id/save_key" />
 
 </RelativeLayout>

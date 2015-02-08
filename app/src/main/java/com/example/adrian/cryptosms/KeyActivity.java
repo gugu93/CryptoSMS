@@ -63,7 +63,7 @@ public class KeyActivity extends ActionBarActivity {
         setContentView(R.layout.activity_key);
         Button but1 = (Button) findViewById(R.id.save_key);
         Button but2 = (Button) findViewById(R.id.load_key);
-        Button but3 = (Button) findViewById(R.id.send_key);
+        Button but4 = (Button) findViewById(R.id.bluetooth_devices);
         BA = BluetoothAdapter.getDefaultAdapter();
         pass = (EditText) findViewById(R.id.private_key);
         txtView = (TextView) findViewById(R.id.textView);
@@ -91,10 +91,11 @@ public class KeyActivity extends ActionBarActivity {
                 String filename = "private_key.key";
     }
         });
-        but3.setOnClickListener(new View.OnClickListener() {
+        but4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(getApplicationContext(),DeviceListActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -117,9 +118,9 @@ public class KeyActivity extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
         if (mChatService != null) {
-// Only if the state is STATE_NONE, do we know that we haven't started already
+            // Only if the state is STATE_NONE, do we know that we haven't started already
             if (mChatService.getState() == BluetoothChatService.STATE_NONE) {
-// Start the Bluetooth chat services
+            // Start the Bluetooth chat services
                 mChatService.start();
             }
         }
@@ -131,7 +132,6 @@ public class KeyActivity extends ActionBarActivity {
         if (mChatService != null) mChatService.stop();
     }
 
-    //TODO
     private void setupChat() {
         Log.d(TAG, "setupChat()");
 // Initialize the array adapter for the conversation thread

@@ -206,11 +206,13 @@ public class BluetoothChatService {
                     synchronized (BluetoothChatService.this) {
                         switch (mState) {
                             case STATE_LISTEN:
+                                break;
                             case STATE_CONNECTING:
                                 // Situation normal. Start the connected thread.
                                 connected(socket, socket.getRemoteDevice());
                                 break;
                             case STATE_NONE:
+                                break;
                             case STATE_CONNECTED:
                                 // Either not ready or already connected. Terminate new socket.
                                 try {
