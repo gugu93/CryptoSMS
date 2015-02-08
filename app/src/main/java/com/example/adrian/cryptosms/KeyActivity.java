@@ -64,7 +64,6 @@ public class KeyActivity extends ActionBarActivity {
         Button but1 = (Button) findViewById(R.id.save_key);
         Button but2 = (Button) findViewById(R.id.load_key);
         Button but4 = (Button) findViewById(R.id.bluetooth_devices);
-        BA = BluetoothAdapter.getDefaultAdapter();
         pass = (EditText) findViewById(R.id.private_key);
         txtView = (TextView) findViewById(R.id.textView);
 
@@ -105,6 +104,7 @@ public class KeyActivity extends ActionBarActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        BA = BluetoothAdapter.getDefaultAdapter();
         if (!BA.isEnabled()) {
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
